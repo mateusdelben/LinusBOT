@@ -1,0 +1,95 @@
+#include <PETEletrica.h>
+float valref = 2000 , kp = 0.0473, velconst = 120;
+int IN1 = 6, IN2 = 5, IN3 = 9, IN4 = 10; 
+float a0, a1, a2, a3, a4;
+int medS= 5;
+float d;
+float u, erro;
+bool f = false;
+int trigger_pin = 8, echo_pin = 7;
+Motores motor(IN4, IN3, IN2, IN1);
+
+SensorInfravermelhoRC qtr((unsigned char[]){ A0, A1, A2, A3, A4 }, 5, 2000, QTR_NO_EMITTER_PIN);
+unsigned int sensores[5];
+
+SensorUltrassonico ultrassonico(trigger_pin,echo_pin);
+void setup() {
+ 
+  //Serial.begin(9600);
+  for (int i = 0; i < 100; i++) {
+    qtr.calibrate();
+    delay(10);
+  }
+}
+
+void loop() {
+  unsigned int position = qtr.readLine(sensores);
+  a0 = analogRead(A0);
+  a1 = analogRead(A1);
+  a2 = analogRead(A2);
+  a3 = analogRead(A3);
+  a4 = analogRead(A4);
+
+  
+  medS = ((a0 + a1 + a2 + a3 + a4)/5); 
+
+  //Serial.println(medS);
+  erro = valref - position ;
+  u = kp * erro;
+  motor.set_motors (u + velconst , u - velconst );
+  
+
+  if (medS >=550){
+    f = true;
+    while (f){
+      unsigned int position = qtr.readLine(sensores);
+      erro = valref - position ;
+      u = kp * erro;
+      motor.set_motors (u + velconst , u - velconst );
+      long microsec = ultrassonico.timing();
+      d = ultrassonico.convert(microsec, SensorUltrassonico::CM);
+
+      if(d <= 30){
+        
+// (roda da esquerda, roda da direita)
+
+
+        
+        motor.set_motors(30,-160); // vira para a esquerda
+        delay(900);
+       motor.set_motors(120,-60); // direita
+       delay(1000);
+       motor.set_motors(120,-120); // reto
+       delay(500);
+       motor.set_motors(120,-40); // voltar
+       delay(500);
+       //motor.set_motors(40,-130); // voltar ao sentido normal
+       //delay(400);
+       motor.set_motors(30,-145); // 
+       delay(1000);
+       
+       
+       
+        //motor.set_motors(160,160); // anda "A"
+       // delay(1500);
+        //motor.set_motors(160,400); // vira esquerda
+        //delay(900);
+      //  motor.set_motors(30,100); // para
+      //  delay(1200);
+       // motor.set_motors(100,30); // anda anda "W"
+       // delay(1000);
+        //motor.set_motors(30,100); // vira pra esquerda
+        //delay(900);
+        //motor.set_motors(30,100); // andar "A"
+        //delay(1000);
+        //motor.set_motors(30,100); // vira pra direita
+        //delay(900);
+
+        
+        f = false;
+
+      }
+
+    }
+  }
+}

@@ -22,6 +22,6 @@ Para a realização do código:
 
 A competição foi organizada em equipes de até cinco participantes, tendo como objetivo a construção de um carro robótico autônomo capaz de seguir uma linha e desviar de obstáculos. Além da construção do veículo, cada equipe também desenvolveu e entregou o código de controle do robô. O vencedor foi determinado com base no desempenho do carro, sendo premiada a equipe cujo robô completasse o percurso corretamente no menor tempo possível.
 
-# visão geral
+# Visão geral
 
 A competição desafiou os participantes a aplicarem conceitos de eletrônica, programação e automação no desenvolvimento de um robô seguidor de linha. Cada equipe projetou e montou seu próprio veículo, utilizando sensores e algoritmos para garantir a navegação eficiente e a capacidade de desviar de obstáculos. A avaliação considerou tanto a funcionalidade do robô quanto a velocidade com que ele concluía o trajeto, incentivando a inovação e a otimização de desempenho.
